@@ -2,5 +2,5 @@ venv/
 go-api/.env
 beam-worker/.env
 .env
-
+docker-compose.yml
 
