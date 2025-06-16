@@ -116,7 +116,12 @@
   border-color: var(--border);
 }
 
+html {
+  background: var(--background);
+}
+
 body {
   color: var(--foreground);
   background: var(--background);
+  overscroll-behavior: none;
 }
