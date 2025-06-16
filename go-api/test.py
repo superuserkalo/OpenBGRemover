@@ -10,7 +10,7 @@ import time
 from pathlib import Path
 
 # Configuration
-GATEWAY_URL = "https://openbgremovergateway-762235720907.europe-west4.run.app"
+GATEWAY_URL = "https://openbgremover-762235720907.europe-west4.run.app"
 TEST_IMAGE = "goresh.png"  # Your test image
 
 def test_health():

@@ -5,4 +5,4 @@ beam-worker/.env
 docker-compose.yml
 .DS_Store
 Dockerfile
-
+firebase-sdk-example.js
