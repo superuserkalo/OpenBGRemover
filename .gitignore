@@ -6,3 +6,8 @@ docker-compose.yml
 .DS_Store
 Dockerfile
 firebase-sdk-example.js
+frontend/node_modules
+**/node_modules/
+.next/
+__pycache__/
+.dockerignore
