@@ -23,11 +23,35 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-neutral-950 text-white overflow-hidden">
-      {/* Subtle animated background elements - much more minimal */}
+      {/* Enhanced animated background elements with creative glow effects */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-orange-500/5 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute top-1/2 -left-40 w-80 h-80 bg-amber-500/5 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute -bottom-40 right-1/3 w-80 h-80 bg-orange-500/3 rounded-full blur-3xl animate-pulse delay-2000"></div>
+        {/* Primary floating orbs with enhanced glow and movement */}
+        <div className="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-orange-400/8 via-amber-400/6 to-orange-500/4 rounded-full blur-3xl animate-float animate-glow-pulse"></div>
+        <div className="absolute top-1/2 -left-40 w-80 h-80 bg-gradient-to-tr from-amber-400/7 via-orange-400/5 to-amber-500/3 rounded-full blur-3xl animate-float-slow animate-glow-pulse delay-1000"></div>
+        <div className="absolute -bottom-40 right-1/3 w-72 h-72 bg-gradient-to-tl from-orange-500/6 via-amber-400/4 to-orange-400/2 rounded-full blur-3xl animate-float-delayed animate-glow-pulse delay-2000"></div>
+        
+        {/* Secondary floating particles for depth with gentle drift */}
+        <div className="absolute top-1/4 right-1/4 w-32 h-32 bg-orange-400/4 rounded-full blur-2xl animate-gentle-drift animate-pulse delay-500"></div>
+        <div className="absolute bottom-1/4 left-1/4 w-40 h-40 bg-amber-400/4 rounded-full blur-2xl animate-gentle-drift animate-pulse delay-1500" style={{animationDirection: 'reverse'}}></div>
+        <div className="absolute top-3/4 right-3/4 w-24 h-24 bg-orange-300/3 rounded-full blur-xl animate-float animate-pulse delay-3000"></div>
+        
+        {/* Additional micro particles for sparkle effect */}
+        <div className="absolute top-1/3 left-1/3 w-16 h-16 bg-amber-300/5 rounded-full blur-lg animate-float delay-700"></div>
+        <div className="absolute bottom-1/3 right-2/3 w-20 h-20 bg-orange-300/5 rounded-full blur-lg animate-float-slow delay-1200"></div>
+        <div className="absolute top-2/3 left-2/3 w-12 h-12 bg-orange-400/6 rounded-full blur-md animate-gentle-drift delay-1800"></div>
+        
+        {/* Subtle moving gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-orange-500/2 via-transparent to-amber-500/2 animate-pulse delay-4000"></div>
+        
+        {/* Animated rays effect - slower and more subtle */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full">
+          <div className="absolute inset-0 bg-gradient-conic from-orange-400/2 via-transparent via-transparent via-transparent to-orange-400/2 animate-spin" style={{animationDuration: '25s'}}></div>
+        </div>
+        
+        {/* Counter-rotating subtle rays for depth */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4">
+          <div className="absolute inset-0 bg-gradient-conic from-amber-400/1 via-transparent via-transparent via-transparent to-amber-400/1 animate-spin" style={{animationDuration: '35s', animationDirection: 'reverse'}}></div>
+        </div>
       </div>
 
       {/* Navigation - Mobile Optimized */}
