@@ -5,10 +5,21 @@ import { Zap, Code, Shield, ArrowRight, Github, Star, Coffee, Menu, X } from "lu
 import Link from "next/link"
 import { BackgroundRemovalDemo } from "@/components/background-removal-demo"
 import { XIcon } from "@/components/x-icon"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 export default function HomePage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY
+      setIsScrolled(scrollTop > 50)
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   return (
     <div className="min-h-screen bg-neutral-950 text-white overflow-hidden">
@@ -20,7 +31,11 @@ export default function HomePage() {
       </div>
 
       {/* Navigation - Mobile Optimized */}
-      <nav className="border-b border-neutral-800 bg-neutral-950/80 backdrop-blur-xl sticky top-0 z-50 transition-all duration-300">
+      <nav className={`fixed top-0 left-0 right-0 z-50 header-transition ${
+        isScrolled 
+          ? 'header-scrolled' 
+          : 'header-glass'
+      }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
@@ -154,7 +169,7 @@ export default function HomePage() {
       </nav>
 
       {/* Hero Section - Mobile Optimized */}
-      <section className="pt-12 sm:pt-16 lg:pt-24 pb-12 sm:pb-16 relative">
+      <section className="pt-20 sm:pt-24 lg:pt-32 pb-12 sm:pb-16 relative">
         {/* Subtle background pattern */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(251,146,60,0.03),transparent_50%)]"></div>
 
