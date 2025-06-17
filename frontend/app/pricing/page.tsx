@@ -55,7 +55,7 @@ export default function PricingPage() {
       <nav className="border-b border-neutral-800 bg-neutral-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <Link href="/" className="flex items-center space-x-2 text-neutral-400 hover:text-white">
+            <Link href="/" className="flex items-center space-x-2 text-neutral-400 hover:text-white cursor-pointer">
               <ArrowLeft className="w-4 h-4" />
               <span className="hidden sm:inline">Back to home</span>
               <span className="sm:hidden">Back</span>
@@ -103,8 +103,8 @@ export default function PricingPage() {
                   </li>
                 ))}
               </ul>
-              <Link href="/signup">
-                <Button className="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white shadow-lg shadow-orange-500/20 text-sm sm:text-base">
+              <Link href="/signup" className="cursor-pointer">
+                <Button className="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white shadow-lg shadow-orange-500/20 text-sm sm:text-base cursor-pointer">
                   Start processing
                 </Button>
               </Link>
@@ -165,9 +165,9 @@ export default function PricingPage() {
                     <span>Email support</span>
                   </li>
                 </ul>
-                <Link href="/signup">
+                <Link href="/signup" className="cursor-pointer">
                   <Button
-                    className={`w-full text-sm sm:text-base ${
+                    className={`w-full text-sm sm:text-base cursor-pointer ${
                       pkg.popular
                         ? "bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white shadow-lg shadow-orange-500/20"
                         : "bg-neutral-800 hover:bg-neutral-700 text-white border border-neutral-700"
@@ -183,10 +183,10 @@ export default function PricingPage() {
 
         <div className="text-center">
           <p className="text-neutral-400 mb-4 text-sm sm:text-base">Need more than 100,000 images?</p>
-          <Link href="/contact">
+          <Link href="/contact" className="cursor-pointer">
             <Button
               variant="outline"
-              className="border-neutral-600 text-neutral-300 hover:bg-neutral-800 hover:border-neutral-500 hover:text-white text-sm sm:text-base"
+              className="border-neutral-600 text-neutral-300 hover:bg-neutral-800 hover:border-neutral-500 hover:text-white text-sm sm:text-base cursor-pointer"
             >
               Contact us for volume pricing
             </Button>

@@ -23,25 +23,16 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-neutral-950 text-white overflow-hidden">
-      {/* Premium smooth background animation */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        {/* Subtle gradient mesh background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-orange-500/[0.02] via-transparent to-amber-500/[0.02] animate-subtle-pulse"></div>
+      {/* Minimal PlanetScale-style background */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
+        {/* Clean base gradient */}
+        <div className="absolute inset-0 bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-950"></div>
         
-        {/* Primary floating orb - main focal point */}
-        <div className="absolute top-1/4 -right-32 w-80 h-80 bg-gradient-to-br from-orange-400/[0.08] via-amber-400/[0.06] to-orange-500/[0.04] rounded-full blur-3xl animate-smooth-float"></div>
+        {/* Subtle accent gradient */}
+        <div className="absolute inset-0 bg-gradient-to-br from-orange-500/[0.02] via-transparent to-amber-500/[0.015] animate-pulse-gentle"></div>
         
-        {/* Secondary orb for depth */}
-        <div className="absolute -bottom-32 left-1/4 w-64 h-64 bg-gradient-to-tr from-amber-400/[0.06] via-orange-400/[0.04] to-amber-500/[0.02] rounded-full blur-3xl animate-smooth-float-delayed"></div>
-        
-        {/* Subtle accent particles */}
-        <div className="absolute top-1/2 left-1/3 w-32 h-32 bg-orange-400/[0.03] rounded-full blur-2xl animate-gentle-float"></div>
-        <div className="absolute bottom-1/3 right-1/3 w-24 h-24 bg-amber-400/[0.03] rounded-full blur-xl animate-gentle-float-reverse"></div>
-        
-        {/* Ultra-subtle rotating gradient overlay */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full opacity-30">
-          <div className="absolute inset-0 bg-gradient-conic from-orange-400/[0.01] via-transparent via-transparent via-transparent to-orange-400/[0.01] animate-ultra-slow-spin"></div>
-        </div>
+        {/* Single floating element for subtle depth */}
+        <div className="absolute top-1/3 -right-32 w-96 h-96 bg-gradient-to-br from-orange-400/[0.03] to-transparent rounded-full blur-3xl animate-float-minimal"></div>
       </div>
 
       {/* Navigation - Mobile Optimized */}
@@ -64,21 +55,21 @@ export default function HomePage() {
             <div className="hidden lg:flex items-center space-x-8">
               <Link
                 href="/pricing"
-                className="text-neutral-400 hover:text-white transition-all duration-300 hover:scale-105 relative group"
+                className="text-neutral-400 hover:text-white transition-all duration-300 hover:scale-105 relative group cursor-pointer"
               >
                 Pricing
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-orange-400 transition-all duration-300 group-hover:w-full"></span>
               </Link>
               <Link
                 href="/docs"
-                className="text-neutral-400 hover:text-white transition-all duration-300 hover:scale-105 relative group"
+                className="text-neutral-400 hover:text-white transition-all duration-300 hover:scale-105 relative group cursor-pointer"
               >
                 Documentation
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-orange-400 transition-all duration-300 group-hover:w-full"></span>
               </Link>
               <Link
                 href="https://github.com/your-repo/openbgremover"
-                className="flex items-center space-x-1 text-neutral-400 hover:text-white transition-all duration-300 hover:scale-105 group"
+                className="flex items-center space-x-1 text-neutral-400 hover:text-white transition-all duration-300 hover:scale-105 group cursor-pointer"
               >
                 <Github className="w-4 h-4 group-hover:rotate-12 transition-transform duration-300" />
                 <span>GitHub</span>
@@ -92,7 +83,7 @@ export default function HomePage() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="text-neutral-500 hover:text-orange-400 hover:bg-neutral-900 text-xs px-2 py-1 h-7 transition-all duration-300 hover:scale-105"
+                  className="text-neutral-500 hover:text-orange-400 hover:bg-neutral-900 text-xs px-2 py-1 h-7 transition-all duration-300 hover:scale-105 cursor-pointer"
                 >
                   <Coffee className="w-3 h-3 mr-1 hover:rotate-12 transition-transform duration-300" />
                   <span className="hidden xl:inline">Coffee</span>
@@ -101,13 +92,13 @@ export default function HomePage() {
               <Link href="/login">
                 <Button
                   variant="ghost"
-                  className="text-neutral-400 hover:text-white hover:bg-neutral-800 transition-all duration-300 hover:scale-105"
+                  className="text-neutral-400 hover:text-white hover:bg-neutral-800 transition-all duration-300 hover:scale-105 cursor-pointer"
                 >
                   Sign In
                 </Button>
               </Link>
               <Link href="/signup">
-                <Button className="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white shadow-lg shadow-orange-500/20 hover:shadow-orange-500/40 transition-all duration-300 hover:scale-105 hover:-translate-y-0.5">
+                <Button className="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white shadow-lg shadow-orange-500/20 hover:shadow-orange-500/40 transition-all duration-300 hover:scale-105 hover:-translate-y-0.5 cursor-pointer">
                   Get Started
                 </Button>
               </Link>
@@ -131,21 +122,21 @@ export default function HomePage() {
             <div className="lg:hidden border-t border-neutral-800 py-4 space-y-4 animate-fade-in-up">
               <Link
                 href="/pricing"
-                className="block text-neutral-400 hover:text-white transition-colors duration-300 py-2"
+                className="block text-neutral-400 hover:text-white transition-colors duration-300 py-2 cursor-pointer"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Pricing
               </Link>
               <Link
                 href="/docs"
-                className="block text-neutral-400 hover:text-white transition-colors duration-300 py-2"
+                className="block text-neutral-400 hover:text-white transition-colors duration-300 py-2 cursor-pointer"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Documentation
               </Link>
               <Link
                 href="https://github.com/your-repo/openbgremover"
-                className="flex items-center space-x-2 text-neutral-400 hover:text-white transition-colors duration-300 py-2"
+                className="flex items-center space-x-2 text-neutral-400 hover:text-white transition-colors duration-300 py-2 cursor-pointer"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <Github className="w-4 h-4" />
@@ -156,13 +147,13 @@ export default function HomePage() {
                 <Link href="/login" onClick={() => setMobileMenuOpen(false)}>
                   <Button
                     variant="ghost"
-                    className="w-full text-neutral-400 hover:text-white hover:bg-neutral-800 justify-start"
+                    className="w-full text-neutral-400 hover:text-white hover:bg-neutral-800 justify-start cursor-pointer"
                   >
                     Sign In
                   </Button>
                 </Link>
                 <Link href="/signup" onClick={() => setMobileMenuOpen(false)}>
-                  <Button className="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white shadow-lg shadow-orange-500/20">
+                  <Button className="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white shadow-lg shadow-orange-500/20 cursor-pointer">
                     Get Started
                   </Button>
                 </Link>
@@ -170,7 +161,7 @@ export default function HomePage() {
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="w-full text-neutral-500 hover:text-orange-400 hover:bg-neutral-900 justify-start"
+                    className="w-full text-neutral-500 hover:text-orange-400 hover:bg-neutral-900 justify-start cursor-pointer"
                   >
                     <Coffee className="w-3 h-3 mr-2" />
                     Buy us a coffee
@@ -184,8 +175,8 @@ export default function HomePage() {
 
       {/* Hero Section - Mobile Optimized */}
       <section className="pt-20 sm:pt-24 lg:pt-32 pb-12 sm:pb-16 relative">
-        {/* Subtle background pattern */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(251,146,60,0.03),transparent_50%)]"></div>
+        {/* Simple hero background */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(251,146,60,0.015),transparent_60%)] animate-pulse-gentle"></div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center max-w-4xl mx-auto">
@@ -216,20 +207,20 @@ export default function HomePage() {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-8 sm:mb-12 animate-fade-in-up delay-400 px-4 sm:px-0">
-              <Link href="/signup" className="w-full sm:w-auto">
+              <Link href="/signup" className="w-full sm:w-auto cursor-pointer">
                 <Button
                   size="lg"
-                  className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 py-3 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white shadow-lg shadow-orange-500/20 hover:shadow-orange-500/40 transition-all duration-300 hover:scale-105 hover:-translate-y-1 group"
+                  className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 py-3 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white shadow-lg shadow-orange-500/20 hover:shadow-orange-500/40 transition-all duration-300 hover:scale-105 hover:-translate-y-1 group cursor-pointer"
                 >
                   Start removing backgrounds
                   <ArrowRight className="w-4 sm:w-5 h-4 sm:h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
                 </Button>
               </Link>
-              <Link href="https://github.com/your-repo/openbgremover" className="w-full sm:w-auto">
+              <Link href="https://github.com/your-repo/openbgremover" className="w-full sm:w-auto cursor-pointer">
                 <Button
                   variant="outline"
                   size="lg"
-                  className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 py-3 border-neutral-600 text-neutral-300 hover:bg-neutral-800 hover:border-orange-500/50 hover:text-white transition-all duration-300 hover:scale-105 hover:-translate-y-1 group"
+                  className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 py-3 border-neutral-600 text-neutral-300 hover:bg-neutral-800 hover:border-orange-500/50 hover:text-white transition-all duration-300 hover:scale-105 hover:-translate-y-1 group cursor-pointer"
                 >
                   <Github className="w-4 sm:w-5 h-4 sm:h-5 mr-2 group-hover:rotate-12 transition-transform duration-300" />
                   View source code
@@ -242,10 +233,10 @@ export default function HomePage() {
               <p className="text-neutral-400 text-base sm:text-lg mb-2">
                 <span className="text-white font-semibold">50 free images</span> to get you started
               </p>
-              <Link href="/pricing" className="inline-block">
+              <Link href="/pricing" className="inline-block cursor-pointer">
                 <Button
                   variant="ghost"
-                  className="text-orange-400 hover:text-orange-300 hover:bg-orange-500/10 underline decoration-dotted underline-offset-4 transition-all duration-300 hover:scale-105 group text-sm sm:text-base"
+                  className="text-orange-400 hover:text-orange-300 hover:bg-orange-500/10 underline decoration-dotted underline-offset-4 transition-all duration-300 hover:scale-105 group text-sm sm:text-base cursor-pointer"
                 >
                   View pricing
                   <ArrowRight className="w-3 sm:w-4 h-3 sm:h-4 ml-1 group-hover:translate-x-1 transition-transform duration-300" />
@@ -409,21 +400,21 @@ export default function HomePage() {
             just a buzzword for us—it's how we build trust.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
-            <Link href="https://github.com/your-repo/openbgremover" className="w-full sm:w-auto">
+            <Link href="https://github.com/your-repo/openbgremover" className="w-full sm:w-auto cursor-pointer">
               <Button
                 size="lg"
                 variant="outline"
-                className="w-full sm:w-auto border-neutral-600 text-neutral-300 hover:bg-neutral-800 hover:border-orange-500/50 hover:text-white transition-all duration-300 hover:scale-105 hover:-translate-y-1 group"
+                className="w-full sm:w-auto border-neutral-600 text-neutral-300 hover:bg-neutral-800 hover:border-orange-500/50 hover:text-white transition-all duration-300 hover:scale-105 hover:-translate-y-1 group cursor-pointer"
               >
                 <Github className="w-4 sm:w-5 h-4 sm:h-5 mr-2 group-hover:rotate-12 transition-transform duration-300" />
                 View on GitHub
               </Button>
             </Link>
-            <Link href="/docs/self-hosting" className="w-full sm:w-auto">
+            <Link href="/docs/self-hosting" className="w-full sm:w-auto cursor-pointer">
               <Button
                 size="lg"
                 variant="outline"
-                className="w-full sm:w-auto border-neutral-600 text-neutral-300 hover:bg-neutral-800 hover:border-orange-500/50 hover:text-white transition-all duration-300 hover:scale-105 hover:-translate-y-1 group"
+                className="w-full sm:w-auto border-neutral-600 text-neutral-300 hover:bg-neutral-800 hover:border-orange-500/50 hover:text-white transition-all duration-300 hover:scale-105 hover:-translate-y-1 group cursor-pointer"
               >
                 <Code className="w-4 sm:w-5 h-4 sm:h-5 mr-2 group-hover:rotate-12 transition-transform duration-300" />
                 Self-hosting guide
@@ -454,7 +445,7 @@ export default function HomePage() {
                 <li>
                   <Link
                     href="/docs"
-                    className="hover:text-orange-400 transition-colors duration-300 hover:translate-x-1 inline-block"
+                    className="hover:text-orange-400 transition-colors duration-300 hover:translate-x-1 inline-block cursor-pointer"
                   >
                     Documentation
                   </Link>
@@ -462,7 +453,7 @@ export default function HomePage() {
                 <li>
                   <Link
                     href="/docs/api"
-                    className="hover:text-orange-400 transition-colors duration-300 hover:translate-x-1 inline-block"
+                    className="hover:text-orange-400 transition-colors duration-300 hover:translate-x-1 inline-block cursor-pointer"
                   >
                     API Reference
                   </Link>
@@ -470,7 +461,7 @@ export default function HomePage() {
                 <li>
                   <Link
                     href="/status"
-                    className="hover:text-orange-400 transition-colors duration-300 hover:translate-x-1 inline-block"
+                    className="hover:text-orange-400 transition-colors duration-300 hover:translate-x-1 inline-block cursor-pointer"
                   >
                     Status
                   </Link>
@@ -483,7 +474,7 @@ export default function HomePage() {
                 <li>
                   <Link
                     href="https://github.com/your-repo/openbgremover"
-                    className="hover:text-orange-400 transition-colors duration-300 hover:translate-x-1 inline-block"
+                    className="hover:text-orange-400 transition-colors duration-300 hover:translate-x-1 inline-block cursor-pointer"
                   >
                     GitHub
                   </Link>
@@ -491,7 +482,7 @@ export default function HomePage() {
                 <li>
                   <Link
                     href="/changelog"
-                    className="hover:text-orange-400 transition-colors duration-300 hover:translate-x-1 inline-block"
+                    className="hover:text-orange-400 transition-colors duration-300 hover:translate-x-1 inline-block cursor-pointer"
                   >
                     Changelog
                   </Link>
@@ -499,7 +490,7 @@ export default function HomePage() {
                 <li>
                   <Link
                     href="/support"
-                    className="hover:text-orange-400 transition-colors duration-300 hover:translate-x-1 inline-block"
+                    className="hover:text-orange-400 transition-colors duration-300 hover:translate-x-1 inline-block cursor-pointer"
                   >
                     Support
                   </Link>
@@ -512,7 +503,7 @@ export default function HomePage() {
                 <li>
                   <Link
                     href="/pricing"
-                    className="hover:text-orange-400 transition-colors duration-300 hover:translate-x-1 inline-block"
+                    className="hover:text-orange-400 transition-colors duration-300 hover:translate-x-1 inline-block cursor-pointer"
                   >
                     Pricing
                   </Link>
@@ -520,7 +511,7 @@ export default function HomePage() {
                 <li>
                   <Link
                     href="/contact"
-                    className="hover:text-orange-400 transition-colors duration-300 hover:translate-x-1 inline-block"
+                    className="hover:text-orange-400 transition-colors duration-300 hover:translate-x-1 inline-block cursor-pointer"
                   >
                     Contact
                   </Link>
@@ -528,7 +519,7 @@ export default function HomePage() {
                 <li>
                   <Link
                     href="/privacy"
-                    className="hover:text-orange-400 transition-colors duration-300 hover:translate-x-1 inline-block"
+                    className="hover:text-orange-400 transition-colors duration-300 hover:translate-x-1 inline-block cursor-pointer"
                   >
                     Privacy
                   </Link>
@@ -541,7 +532,7 @@ export default function HomePage() {
                 <li>
                   <Link
                     href="/compare/removebg"
-                    className="hover:text-orange-400 transition-colors duration-300 hover:translate-x-1 inline-block"
+                    className="hover:text-orange-400 transition-colors duration-300 hover:translate-x-1 inline-block cursor-pointer"
                   >
                     vs Remove.bg
                   </Link>
@@ -549,7 +540,7 @@ export default function HomePage() {
                 <li>
                   <Link
                     href="/compare/photoshop"
-                    className="hover:text-orange-400 transition-colors duration-300 hover:translate-x-1 inline-block"
+                    className="hover:text-orange-400 transition-colors duration-300 hover:translate-x-1 inline-block cursor-pointer"
                   >
                     vs Photoshop API
                   </Link>
@@ -557,7 +548,7 @@ export default function HomePage() {
                 <li>
                   <Link
                     href="/compare/clipdrop"
-                    className="hover:text-orange-400 transition-colors duration-300 hover:translate-x-1 inline-block"
+                    className="hover:text-orange-400 transition-colors duration-300 hover:translate-x-1 inline-block cursor-pointer"
                   >
                     vs ClipDrop
                   </Link>
@@ -565,7 +556,7 @@ export default function HomePage() {
                 <li>
                   <Link
                     href="/compare/canva"
-                    className="hover:text-orange-400 transition-colors duration-300 hover:translate-x-1 inline-block"
+                    className="hover:text-orange-400 transition-colors duration-300 hover:translate-x-1 inline-block cursor-pointer"
                   >
                     vs Canva API
                   </Link>

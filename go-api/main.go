@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"io"
 	"log"
-  //"mime/multipart"
 	"net/http"
 	"os"
 	"os/signal"
@@ -16,9 +15,13 @@ import (
 	"strings"
 	"syscall"
 	"time"
-  "github.com/joho/godotenv"
+
+	"github.com/joho/godotenv"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+
+	"github.com/superuserkalo/OpenBGRemover/go-api/auth"
+	"github.com/superuserkalo/OpenBGRemover/go-api/database"
 )
 
 // Configuration
@@ -72,8 +75,10 @@ type APIResponse struct {
 
 // Gateway service
 type Gateway struct {
-	config *Config
-	client *http.Client
+	config      *Config
+	client      *http.Client
+	db          *database.DB
+	authService *auth.AuthService
 }
 
 // Load environment variables from .env file
@@ -127,12 +132,14 @@ func LoadConfig() (*Config, error) {
 }
 
 // Create new gateway
-func NewGateway(config *Config) *Gateway {
+func NewGateway(config *Config, db *database.DB, authService *auth.AuthService) *Gateway {
 	return &Gateway{
-		config: config,
-		client: &http.Client{
+		config:      config,
+		client:      &http.Client{
 			Timeout: config.Timeout,
 		},
+		db:          db,
+		authService: authService,
 	}
 }
 
@@ -225,9 +232,91 @@ func validateFormat(format string) bool {
 	return false
 }
 
+// Authentication middleware for protected endpoints
+func (g *Gateway) authMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		authHeader := c.GetHeader("Authorization")
+		if authHeader == "" {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Authorization header required"})
+			c.Abort()
+			return
+		}
+
+		token, err := auth.ExtractTokenFromHeader(authHeader)
+		if err != nil {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid authorization header"})
+			c.Abort()
+			return
+		}
+
+		var userID string
+		var apiKeyID *int64
+
+		if auth.IsAPIKey(token) {
+			// API Key authentication
+			hashedKey := auth.HashAPIKey(token)
+			apiKey, err := g.db.GetAPIKeyByHash(c.Request.Context(), hashedKey)
+			if err != nil {
+				c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid API key"})
+				c.Abort()
+				return
+			}
+			userID = apiKey.UserID
+			apiKeyID = &apiKey.ID
+
+			// Update last used timestamp
+			go g.db.UpdateAPIKeyLastUsed(context.Background(), apiKey.ID)
+		} else {
+			// JWT authentication
+			claims, err := g.authService.VerifyJWT(token)
+			if err != nil {
+				c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid JWT token"})
+				c.Abort()
+				return
+			}
+			userID = claims.Subject
+		}
+
+		// Get user profile
+		profile, err := g.db.GetProfile(c.Request.Context(), userID)
+		if err != nil {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "User profile not found"})
+			c.Abort()
+			return
+		}
+
+		// Store user info in context
+		c.Set("userID", userID)
+		c.Set("profile", profile)
+		c.Set("apiKeyID", apiKeyID)
+		c.Next()
+	}
+}
+
 // Main API endpoint for SDK calls
 func (g *Gateway) handleRemoveBackground(c *gin.Context) {
 	startTime := time.Now()
+
+	// Get user info from middleware
+	userID, _ := c.Get("userID")
+	apiKeyID, _ := c.Get("apiKeyID")
+
+	// Determine source
+	source := "ui"
+	if apiKeyID != nil {
+		source = "api"
+	}
+
+	// Decrement credits before processing
+	creditType, err := g.db.DecrementCredits(c.Request.Context(), userID.(string))
+	if err != nil {
+		c.JSON(http.StatusPaymentRequired, APIResponse{
+			Success:   false,
+			Error:     "Insufficient credits",
+			ErrorCode: "INSUFFICIENT_CREDITS",
+		})
+		return
+	}
 
 	var apiReq APIRequest
 	if err := c.ShouldBindJSON(&apiReq); err != nil {
@@ -236,6 +325,8 @@ func (g *Gateway) handleRemoveBackground(c *gin.Context) {
 			Error:     fmt.Sprintf("Invalid JSON request: %v", err),
 			ErrorCode: "INVALID_REQUEST",
 		})
+		// Log failed usage
+		g.logUsage(c.Request.Context(), userID.(string), apiKeyID, source, false, "Invalid JSON request", 0, creditType)
 		return
 	}
 
@@ -297,12 +388,14 @@ func (g *Gateway) handleRemoveBackground(c *gin.Context) {
 				Error:     "Request timeout",
 				ErrorCode: "TIMEOUT",
 			})
+			g.logUsage(c.Request.Context(), userID.(string), apiKeyID, source, false, "Request timeout", 0, creditType)
 		} else {
 			c.JSON(http.StatusInternalServerError, APIResponse{
 				Success:   false,
 				Error:     "Internal server error",
 				ErrorCode: "BEAM_ERROR",
 			})
+			g.logUsage(c.Request.Context(), userID.(string), apiKeyID, source, false, "Beam worker error", 0, creditType)
 		}
 		return
 	}
@@ -318,6 +411,7 @@ func (g *Gateway) handleRemoveBackground(c *gin.Context) {
 			Error:     beamResp.Error,
 			ErrorCode: errorCode,
 		})
+		g.logUsage(c.Request.Context(), userID.(string), apiKeyID, source, false, beamResp.Error, 0, creditType)
 		return
 	}
 
@@ -342,6 +436,9 @@ func (g *Gateway) handleRemoveBackground(c *gin.Context) {
 			apiResp.Metadata["beam_processing_time_ms"] = beamTime
 		}
 	}
+
+	// Log successful usage
+	g.logUsage(c.Request.Context(), userID.(string), apiKeyID, source, true, "", int(processingTime), creditType)
 
 	c.JSON(http.StatusOK, apiResp)
 }
@@ -574,6 +671,103 @@ func (g *Gateway) requestSizeLimitMiddleware() gin.HandlerFunc {
 	}
 }
 
+// logUsage helper function to create usage log entries
+func (g *Gateway) logUsage(ctx context.Context, userID string, apiKeyID interface{}, source string, success bool, errorMsg string, processingTimeMs int, creditType string) {
+	var apiKeyPtr *int64
+	if apiKeyID != nil {
+		if id, ok := apiKeyID.(*int64); ok {
+			apiKeyPtr = id
+		}
+	}
+
+	var errorMsgPtr *string
+	if errorMsg != "" {
+		errorMsgPtr = &errorMsg
+	}
+
+	var processingTimeMsPtr *int
+	if processingTimeMs > 0 {
+		processingTimeMsPtr = &processingTimeMs
+	}
+
+	var creditTypePtr *string
+	if creditType != "" {
+		creditTypePtr = &creditType
+	}
+
+	logEntry := &database.UsageLog{
+		UserID:           userID,
+		APIKeyID:         apiKeyPtr,
+		Source:           source,
+		WasSuccessful:    success,
+		ErrorMessage:     errorMsgPtr,
+		ProcessingTimeMs: processingTimeMsPtr,
+		CreditTypeUsed:   creditTypePtr,
+	}
+
+	if err := g.db.CreateUsageLog(ctx, logEntry); err != nil {
+		log.Printf("Failed to create usage log: %v", err)
+	}
+}
+
+// handleStats returns user statistics
+func (g *Gateway) handleStats(c *gin.Context) {
+	userID, _ := c.Get("userID")
+	stats, err := g.db.GetUserStats(c.Request.Context(), userID.(string))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get stats"})
+		return
+	}
+	c.JSON(http.StatusOK, stats)
+}
+
+// handleActivity returns user activity with pagination
+func (g *Gateway) handleActivity(c *gin.Context) {
+	userID, _ := c.Get("userID")
+
+	limit := 50
+	offset := 0
+
+	if l := c.Query("limit"); l != "" {
+		if parsed, err := strconv.Atoi(l); err == nil && parsed > 0 && parsed <= 100 {
+			limit = parsed
+		}
+	}
+
+	if o := c.Query("offset"); o != "" {
+		if parsed, err := strconv.Atoi(o); err == nil && parsed >= 0 {
+			offset = parsed
+		}
+	}
+
+	activities, err := g.db.GetUserActivity(c.Request.Context(), userID.(string), limit, offset)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get activity"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"activities": activities,
+		"limit":      limit,
+		"offset":     offset,
+	})
+}
+
+// handleListAPIKeys returns user's API keys
+func (g *Gateway) handleListAPIKeys(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{"message": "API key management coming soon"})
+}
+
+// handleCreateAPIKey creates a new API key
+func (g *Gateway) handleCreateAPIKey(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{"message": "API key creation coming soon"})
+}
+
+// handleDeleteAPIKey deletes an API key
+func (g *Gateway) handleDeleteAPIKey(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{"message": "API key deletion coming soon"})
+}
+
 var startTime time.Time
 
 func main() {
@@ -588,7 +782,20 @@ func main() {
 		log.Fatalf("❌ Configuration error: %v", err)
 	}
 
-	gateway := NewGateway(config)
+	// Initialize database connection
+	db, err := database.New()
+	if err != nil {
+		log.Fatalf("❌ Database connection error: %v", err)
+	}
+	defer db.Close()
+
+	// Initialize authentication service
+	authService, err := auth.NewAuthService()
+	if err != nil {
+		log.Fatalf("❌ Auth service initialization error: %v", err)
+	}
+
+	gateway := NewGateway(config, db, authService)
 
 	// Set Gin mode based on environment
 	if config.Environment == "production" {
@@ -610,7 +817,7 @@ func main() {
 	} else {
 		corsConfig.AllowAllOrigins = true
 	}
-  corsConfig.AllowMethods = []string{"GET", "POST", "OPTIONS"}
+  corsConfig.AllowMethods = []string{"GET", "POST", "DELETE", "OPTIONS"}
 	corsConfig.AllowHeaders = []string{"Content-Type", "Authorization"}
 	corsConfig.ExposeHeaders = []string{"Content-Length"}
 	corsConfig.MaxAge = 12 * time.Hour
@@ -619,7 +826,14 @@ func main() {
 	// API routes
 	api := r.Group("/api/v1")
 	{
+		// Protected endpoints requiring authentication
+		api.Use(gateway.authMiddleware())
 		api.POST("/remove-background", gateway.handleRemoveBackground)
+		api.GET("/stats", gateway.handleStats)
+		api.GET("/activity", gateway.handleActivity)
+		api.GET("/keys", gateway.handleListAPIKeys)
+		api.POST("/keys", gateway.handleCreateAPIKey)
+		api.DELETE("/keys/:key_id", gateway.handleDeleteAPIKey)
 	}
 
 	// Legacy routes

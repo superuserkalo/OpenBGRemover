@@ -71,7 +71,7 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
-          <Link href="/" className="inline-flex items-center space-x-2 text-neutral-400 hover:text-white mb-6">
+          <Link href="/" className="inline-flex items-center space-x-2 text-neutral-400 hover:text-white mb-6 cursor-pointer">
             <ArrowLeft className="w-4 h-4" />
             <span>Back to home</span>
           </Link>
@@ -89,7 +89,7 @@ export default function LoginPage() {
             <Button
               onClick={handleGithubLogin}
               disabled={isGithubLoading}
-              className="w-full mb-6 bg-neutral-800 hover:bg-neutral-700 text-white border border-neutral-700 hover:border-neutral-600 transition-all duration-200"
+              className="w-full mb-6 bg-neutral-800 hover:bg-neutral-700 text-white border border-neutral-700 hover:border-neutral-600 transition-all duration-200 cursor-pointer"
             >
               {isGithubLoading ? (
                 <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin mr-2" />
@@ -143,7 +143,7 @@ export default function LoginPage() {
               )}
               <Button
                 type="submit"
-                className="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white shadow-lg shadow-orange-500/20 transition-all duration-200"
+                className="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white shadow-lg shadow-orange-500/20 transition-all duration-200 cursor-pointer"
                 disabled={isLoading}
               >
                 {isLoading ? (
@@ -154,7 +154,7 @@ export default function LoginPage() {
             </form>
 
             <div className="mt-6 text-center">
-              <Link href="/forgot-password" className="text-sm text-orange-400 hover:text-orange-300">
+              <Link href="/forgot-password" className="text-sm text-orange-400 hover:text-orange-300 cursor-pointer">
                 Forgot your password?
               </Link>
             </div>
@@ -162,7 +162,7 @@ export default function LoginPage() {
             <div className="mt-6 text-center">
               <p className="text-neutral-400">
                 Don't have an account?{" "}
-                <Link href="/signup" className="text-orange-400 hover:text-orange-300 font-medium">
+                <Link href="/signup" className="text-orange-400 hover:text-orange-300 font-medium cursor-pointer">
                   Sign up
                 </Link>
               </p>

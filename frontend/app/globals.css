@@ -112,29 +112,13 @@
     animation: gentleDrift 12s linear infinite;
   }
 
-  /* Premium smooth animations */
-  .animate-subtle-pulse {
-    animation: subtlePulse 8s ease-in-out infinite;
+  /* Minimal animations - PlanetScale style */
+  .animate-pulse-gentle {
+    animation: pulseGentle 8s ease-in-out infinite;
   }
 
-  .animate-smooth-float {
-    animation: smoothFloat 15s ease-in-out infinite;
-  }
-
-  .animate-smooth-float-delayed {
-    animation: smoothFloat 18s ease-in-out infinite 5s;
-  }
-
-  .animate-gentle-float {
-    animation: gentleFloat 20s ease-in-out infinite;
-  }
-
-  .animate-gentle-float-reverse {
-    animation: gentleFloat 22s ease-in-out infinite reverse;
-  }
-
-  .animate-ultra-slow-spin {
-    animation: ultraSlowSpin 60s linear infinite;
+  .animate-float-minimal {
+    animation: floatMinimal 12s ease-in-out infinite;
   }
 
   .delay-200 {
@@ -151,7 +135,7 @@
 
   .header-scrolled {
     backdrop-filter: blur(20px) saturate(180%);
-    background: rgba(3, 7, 18, 0.85);
+    background: rgba(3, 3, 3, 0.85);
     border-bottom: 1px solid rgba(251, 146, 60, 0.1);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), 0 0 64px rgba(251, 146, 60, 0.05);
     transform: translateY(0);
@@ -163,7 +147,7 @@
 
   .header-glass {
     backdrop-filter: blur(16px) saturate(180%);
-    background: rgba(3, 7, 18, 0.4);
+    background: rgba(3, 3, 3, 0.4);
     border-bottom: 1px solid rgba(64, 64, 64, 0.2);
   }
 
@@ -230,58 +214,22 @@
     }
   }
 
-  /* Premium smooth keyframes */
-  @keyframes subtlePulse {
+  /* Simple, clean keyframes - PlanetScale approach */
+  @keyframes pulseGentle {
     0%, 100% {
-      opacity: 1;
-      transform: scale(1);
-    }
-    50% {
-      opacity: 0.7;
-      transform: scale(1.02);
-    }
-  }
-
-  @keyframes smoothFloat {
-    0%, 100% {
-      transform: translateY(0px) translateX(0px) scale(1);
-      opacity: 0.6;
-    }
-    25% {
-      transform: translateY(-8px) translateX(4px) scale(1.01);
       opacity: 0.8;
     }
     50% {
-      transform: translateY(-12px) translateX(8px) scale(1.02);
       opacity: 1;
     }
-    75% {
-      transform: translateY(4px) translateX(-6px) scale(1.01);
-      opacity: 0.8;
-    }
   }
 
-  @keyframes gentleFloat {
+  @keyframes floatMinimal {
     0%, 100% {
-      transform: translateY(0px) translateX(0px);
-      opacity: 0.5;
+      transform: translateY(0px);
     }
-    33% {
-      transform: translateY(-6px) translateX(3px);
-      opacity: 0.7;
-    }
-    66% {
-      transform: translateY(3px) translateX(-4px);
-      opacity: 0.6;
-    }
-  }
-
-  @keyframes ultraSlowSpin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
+    50% {
+      transform: translateY(-10px);
     }
   }
 }
@@ -305,13 +253,9 @@ html {
   scroll-behavior: smooth;
 }
 
-/* GPU acceleration for animations */
-.animate-smooth-float,
-.animate-smooth-float-delayed,
-.animate-gentle-float,
-.animate-gentle-float-reverse,
-.animate-ultra-slow-spin,
-.animate-subtle-pulse {
+/* Minimal GPU acceleration */
+.animate-pulse-gentle,
+.animate-float-minimal {
   will-change: transform, opacity;
   transform: translateZ(0);
   backface-visibility: hidden;

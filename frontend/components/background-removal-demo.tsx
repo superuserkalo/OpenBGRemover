@@ -53,7 +53,7 @@ export function BackgroundRemovalDemo() {
               <p className="text-sm sm:text-base text-neutral-400 mb-4 sm:mb-6 leading-relaxed group-hover:text-neutral-300 transition-colors duration-300 px-2 sm:px-0">
                 Drag and drop an image, or click to select. See the magic happen in seconds.
               </p>
-              <Button className="w-full sm:w-auto bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white shadow-lg shadow-orange-500/20 hover:shadow-orange-500/40 transition-all duration-300 hover:scale-105 hover:-translate-y-1">
+              <Button className="w-full sm:w-auto bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white shadow-lg shadow-orange-500/20 hover:shadow-orange-500/40 transition-all duration-300 hover:scale-105 hover:-translate-y-1 cursor-pointer">
                 Choose Image
               </Button>
             </div>
@@ -98,13 +98,13 @@ export function BackgroundRemovalDemo() {
               </div>
               {processedImage && !isProcessing && (
                 <div className="mt-3 sm:mt-4 flex flex-col sm:flex-row gap-2">
-                  <Button className="flex-1 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white shadow-lg shadow-orange-500/20 hover:shadow-orange-500/40 transition-all duration-300 hover:scale-105 hover:-translate-y-1 group text-sm sm:text-base">
+                  <Button className="flex-1 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white shadow-lg shadow-orange-500/20 hover:shadow-orange-500/40 transition-all duration-300 hover:scale-105 hover:-translate-y-1 group text-sm sm:text-base cursor-pointer">
                     <Download className="w-3 sm:w-4 h-3 sm:h-4 mr-2 group-hover:scale-110 transition-transform duration-300" />
                     Download
                   </Button>
                   <Button
                     variant="outline"
-                    className="border-neutral-600 text-neutral-300 hover:bg-neutral-800 hover:border-orange-500/50 hover:text-white transition-all duration-300 hover:scale-105 hover:-translate-y-1 text-sm sm:text-base"
+                    className="border-neutral-600 text-neutral-300 hover:bg-neutral-800 hover:border-orange-500/50 hover:text-white transition-all duration-300 hover:scale-105 hover:-translate-y-1 text-sm sm:text-base cursor-pointer"
                     onClick={() => {
                       setOriginalImage(null)
                       setProcessedImage(null)

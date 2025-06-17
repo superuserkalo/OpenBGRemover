@@ -54,7 +54,7 @@ export default function ForgotPasswordPage() {
             <Link href="/login">
               <Button
                 variant="outline"
-                className="border-neutral-600 text-neutral-300 hover:bg-neutral-800 hover:border-neutral-500 hover:text-white"
+                className="border-neutral-600 text-neutral-300 hover:bg-neutral-800 hover:border-neutral-500 hover:text-white cursor-pointer"
               >
                 Back to login
               </Button>
@@ -69,7 +69,7 @@ export default function ForgotPasswordPage() {
     <div className="min-h-screen bg-neutral-950 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <Link href="/login" className="inline-flex items-center space-x-2 text-neutral-400 hover:text-white mb-6">
+          <Link href="/login" className="inline-flex items-center space-x-2 text-neutral-400 hover:text-white mb-6 cursor-pointer">
             <ArrowLeft className="w-4 h-4" />
             <span>Back to login</span>
           </Link>
@@ -105,7 +105,7 @@ export default function ForgotPasswordPage() {
               )}
               <Button
                 type="submit"
-                className="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white shadow-lg shadow-orange-500/20 transition-all duration-200"
+                className="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white shadow-lg shadow-orange-500/20 transition-all duration-200 cursor-pointer"
                 disabled={isLoading}
               >
                 {isLoading ? (

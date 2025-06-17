@@ -9,6 +9,11 @@ firebase-sdk-example.js
 frontend/node_modules
 **/node_modules/
 .next/
+frontend/.env.local
+frontend/.env.example
 __pycache__/
 .dockerignore
 CLAUDE.md
+schema.md
+plan_1.md
+supabase_migrations/
